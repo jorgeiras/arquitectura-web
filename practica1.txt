@@ -1,0 +1,144 @@
+interface Persona{
+
+    nombre:string,
+    edad: number,
+    numerosfavoritos:number[],
+    amigo?:Persona[]
+} 
+
+
+
+const alguien:Persona ={
+
+    nombre: "alberto",
+    edad: 28,
+    numerosfavoritos: [1,2,3,4,5],
+    amigo: [
+        {
+        nombre: "jorge",
+        edad: 28,
+        numerosfavoritos:[1,2,3,4]
+        }
+    ]
+
+}
+
+const alguien1:Persona ={
+
+    edad: 28,
+    nombre: "alberto",
+    numerosfavoritos: [1,2,3,4,5],
+    amigo: [
+        {
+        nombre: "jorge",
+        edad: 28,
+        numerosfavoritos:[1,2,3,4]
+        }
+    ]
+
+}
+
+const alguien2:Persona ={
+
+    nombre: "alberto",
+    edad: 28,
+    numerosfavoritos: [1,2,3,4,5],
+    amigo: [
+        {
+        nombre: "jorge",
+        edad: 12,
+        numerosfavoritos:[1,2,3,4]
+        }
+    ]
+
+}
+
+
+
+function deepPrint(x:any){
+    
+    
+    Object.keys(x).forEach( key =>  {
+
+        if( Array.isArray(x[key])){  
+            deepPrint(x[key]);
+        }
+        else if(typeof x[key] === "object"){
+            deepPrint(x[key]);
+        }
+        else{
+            console.log(x[key]);
+        }
+
+
+
+    });
+    
+}
+
+
+function deepEqual(x:any, y:any){
+    
+    const ob1 = Object.keys(x);
+    const ob2 = Object.keys(y);
+
+    if(ob1.length != ob2.length)
+        return false;
+    var flag=0;
+    for (var i=0,j=0; i< ob1.length; i++,j++){
+
+        
+        if(ob1[i]==ob2[j]){
+            flag = 1;
+
+            if( Array.isArray(x[ob1[i]])){  
+                if(deepEqual(x[ob1[i]],y[ob2[j]])==false){
+                    return false;
+                }
+            }
+            else if(typeof x[ob1[i]] === "object"){
+                if(deepEqual(x[ob1[i]],y[ob2[j]])==false){
+                    return false;
+                }
+            }
+            else{
+                if(x[ob1[i]] != y[ob2[j]])
+                    return false;
+            }
+        }
+
+    }
+    if(flag==0)
+        return false;
+    
+    return true;
+    
+}
+
+
+function deepClone(x:any){
+    
+    const clonObjeto = Object.assign({}, x);
+
+    return clonObjeto;
+
+}
+
+
+
+deepPrint(alguien);
+
+
+if(deepEqual(alguien, alguien1)==true)
+    console.log("los objetos alguien y alguien1 son iguales");
+else
+    console.log("los objetos alguien y alguien1 no son iguales");
+
+
+if(deepEqual(alguien, alguien2)==true)
+    console.log("los objetos alguien y alguien2 son iguales");
+else
+    console.log("los objetos alguien y alguien2  no son iguales");
+
+
+deepPrint(deepClone(alguien));
